@@ -34,6 +34,19 @@ app.path("/product/update", (req, res) => {
   }
 });
 
+// DELETE PRODUCT
+app.delete("/product/:id", (req, res) => {
+  let { id } = req.params;
+  try {
+    // code to delete product with this id in DB
+    res.statusCode(200);
+    res.end("Product deleted successfully");
+  } catch (e) {
+    res.statusCode(500);
+    res.end("Failed to delete");
+  }
+});
+
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
