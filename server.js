@@ -21,6 +21,19 @@ app.post("/upload/product", (req, res) => {
   res.end("product was received");
 });
 
+// PATCH / UPDATE
+app.path("/product/update", (req, res) => {
+  let { update } = req.body;
+  try {
+    // code to update DB
+    res.statusCode(200);
+    res.end("Product updated successfully");
+  } catch (e) {
+    res.statusCode(500);
+    res.end("Failed to update");
+  }
+});
+
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
 });
