@@ -53,6 +53,7 @@ app.delete("/product/:id", (req, res) => {
   let { id } = req.params;
   try {
     // code to delete product with this id in DB
+    await collection.deleteOne({id: id});
     res.statusCode(200);
     res.end("Product deleted successfully");
   } catch (e) {
