@@ -30,7 +30,7 @@ app.get("/welcome/:name", (req, res) => {
 app.use(express.json());
 app.post("/upload/product", (req, res) => {
   const product = req.body;
-  console.log(product);
+  const insertResult = await collection.insertOne(product);
   res.end("product was received");
 });
 
