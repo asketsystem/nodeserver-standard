@@ -1,0 +1,14 @@
+{
+  "name": "nodeserver-standard",
+  "version": "1.0.0",
+  "description": "This is a Node expressjs backend server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Franck Asket",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
