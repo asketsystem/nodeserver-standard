@@ -62,6 +62,27 @@ app.delete("/product/:id", (req, res) => {
   }
 });
 
+app.get('/products/:id', (req, res) => {
+    try{
+        const pro = await collection.find({_id:id});
+        res.statusCode(200);
+        res.json(pro);
+    }catch(e){
+        res.statusCode(500);
+        res.end("Failed to get product");
+    }
+});
+
+app.get('/products/all', (req, res) => {
+    try{
+        const pro = await collection.find();
+        res.statusCode(200);
+        res.json(pro);
+    }catch(e){  res.statusCode(500);
+        res.end("Failed to get product");
+    }
+});
+
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
   initDB();
