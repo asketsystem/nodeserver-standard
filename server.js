@@ -9,81 +9,74 @@ const client = new MongoClient(url);
 
 var collection;
 
-async function initDB() {
-  await client.connect();
+async function initDB(){
+   await client.connect();
   const db = client.db("product_db");
-  collection = db.collection("product_stock");
+   collection = db.collection('product_stock');
 }
 
-// GET
-app.get("/welcome/:name", (req, res) => {
-  let { name } = req.params;
-  let { friends } = req.query;
-  res.send(
-    `Welcome ${name} ${
-      friends == "true" ? "your friends" : ""
-    } to Android Innovators `
-  );
-});
+//INSERT
+app.post("/upload/product",async (req,res)=>{
+    const product = req.body;
+    const insertResult = await collection.insertOne(product)
+    res.end(insertResult)
+})
 
-// POST
-app.use(express.json());
-app.post("/upload/product", (req, res) => {
-  const product = req.body;
-  const insertResult = await collection.insertOne(product);
-  res.end("product was received");
-});
-
-// PATCH / UPDATE
-app.path("/product/update", (req, res) => {
-  let { update } = req.body;
-  try {
-    // code to update DB
-    await collection.updateOne({id: update.id}, {$set: updated});
-    res.statusCode(200);
-    res.end("Product updated successfully");
-  } catch (e) {
-    res.statusCode(500);
-    res.end("Failed to update");
-  }
-});
-
-// DELETE PRODUCT
-app.delete("/product/:id", (req, res) => {
-  let { id } = req.params;
-  try {
-    // code to delete product with this id in DB
-    await collection.deleteOne({id: id});
-    res.statusCode(200);
-    res.end("Product deleted successfully");
-  } catch (e) {
-    res.statusCode(500);
-    res.end("Failed to delete");
-  }
-});
-
-app.get('/products/:id', (req, res) => {
+//UPADTE
+app.patch("/products/update", (req,res)=>{
+    let {updated} = req.body
     try{
-        const pro = await collection.find({_id:id});
-        res.statusCode(200);
-        res.json(pro);
-    }catch(e){
-        res.statusCode(500);
-        res.end("Failed to get product");
-    }
-});
+    await collection.updateOne({id:updated.id},{$set:updated})
+    res.statusCode(200)
+      res.end("Updated Successfully")
+     }
+    catch(e){
+      res.statusCode(500)
+      res.end("Failed to update")
+     }
+})
 
-app.get('/products/all', (req, res) => {
+//DELETE
+app.delete("/products/:id",(req,res)=>{
+   let {id} = req.params;
     try{
-        const pro = await collection.find();
-        res.statusCode(200);
-        res.json(pro);
-    }catch(e){  res.statusCode(500);
-        res.end("Failed to get product");
-    }
-});
+    await collection.deleteOne({_id:id})
+    res.statusCode(200)
+      res.end("Deleted Successfully")
+     }
+    catch(e){
+      res.statusCode(500)
+      res.end("Failed to delete")
+     }
+})
 
-app.listen(8080, () => {
-  console.log("Server is running on port 8080");
+//GET
+app.get("/products/:id",(req,res)=>{
+    try{
+    const pro = await collection.find({_id:id})
+    res.statusCode(200)
+      res.json(pro)
+     }
+    catch(e){
+      res.statusCode(500)
+      res.end("Failed to get")
+     }
+})
+
+//GET
+app.get("/products/all",(req,res)=>{
+    try{
+    const pro = await collection.find({})
+    res.statusCode(200)
+      res.json(pro)
+     }
+    catch(e){
+      res.statusCode(500)
+      res.end("Failed to get")
+     }
+})
+
+app.listen(8080,()=>{
+  console.log("server started @ 8080")
   initDB();
-});
+})
