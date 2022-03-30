@@ -39,6 +39,7 @@ app.path("/product/update", (req, res) => {
   let { update } = req.body;
   try {
     // code to update DB
+    await collection.updateOne({id: update.id}, {$set: updated});
     res.statusCode(200);
     res.end("Product updated successfully");
   } catch (e) {
