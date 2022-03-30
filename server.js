@@ -2,6 +2,19 @@ const express = require("express");
 
 const app = express();
 
+const { MongoClient } = require("mongodb");
+const url =
+  "mongodb+srv://root:root@cluster0.elgoi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(url);
+
+var collection;
+
+async function initDB() {
+  await client.connect();
+  const db = client.db("product_db");
+  collection = db.collection("product_stock");
+}
+
 // GET
 app.get("/welcome/:name", (req, res) => {
   let { name } = req.params;
@@ -49,4 +62,5 @@ app.delete("/product/:id", (req, res) => {
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
+  initDB();
 });
